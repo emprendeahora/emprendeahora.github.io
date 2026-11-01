@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Emprende Ahora · Un espacio para innovar te espera</title>
+<meta name="description" content="Acompañamos a emprendedores y entidades del Caribe colombiano con programas, mentorías y metodologías ágiles para crear emprendimientos conscientes, prósperos e innovadores.">
+<meta property="og:title" content="Emprende Ahora">
+<meta property="og:description" content="Un espacio para innovar te espera. Programas para emprendedores y entidades del Caribe colombiano.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#022666">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Marca Emprende Ahora v2: navy + blanco como base, negro para piezas jóvenes, azul vivo como acento, Sol Caribe como chispa */
+:root{
+  --navy:#022666; --navy-2:#0A3480; --white:#FFFFFF; --black:#0B0B0F;
+  --vivo:#2D6BFF; --vivo-d:#1F55D9; --cielo:#A9C5FF; --niebla:#EEF3FF; --sol:#FFC845;
+  --text:#0B1B3F; --muted:#51607E; --line:#DCE3F0;
+  --f-display:"Outfit","Sofia Pro",ui-sans-serif,system-ui,sans-serif;
+  --f-body:"Figtree",ui-sans-serif,system-ui,sans-serif;
+  --wrap:1160px; --r:22px;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--white);color:var(--text);font:400 17px/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.02;letter-spacing:-.025em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+section{padding-block:96px}
+.eyebrow{font:600 13px/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--vivo)}
+.h2{font-size:clamp(34px,5vw,56px);font-weight:700}
+.lede{font-size:19px;color:var(--muted);max-width:60ch}
+.head{display:grid;gap:16px;margin-bottom:48px}
+.mk{position:relative;display:inline-block;z-index:0;white-space:nowrap}
+.mk::after{content:"";position:absolute;left:-.06em;right:-.06em;bottom:.04em;height:.34em;border-radius:99px;background:var(--mkc,var(--cielo));z-index:-1;transform:skewX(-20deg)}
+.sym{display:block}
+.btn{display:inline-flex;align-items:center;gap:10px;font:600 16px/1 var(--f-body);text-decoration:none;border-radius:99px;padding:16px 24px;transition:transform .15s ease,background .15s ease;border:0;cursor:pointer}
+.btn:hover{transform:translateY(-2px)}
+.btn:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--vivo);outline-offset:3px}
+.btn-vivo{background:var(--vivo);color:#fff}.btn-vivo:hover{background:var(--vivo-d)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-white{background:#fff;color:var(--navy)}
+.btn-ghost{background:transparent;color:var(--navy);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn-ghost-w{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.35)}
+.sticker{display:inline-block;font:700 14px/1 var(--f-display);padding:10px 14px;border-radius:99px;transform:rotate(var(--rot,-4deg))}
+.lock{display:inline-flex;align-items:center;gap:.26em;font:700 1em/1 var(--f-display);letter-spacing:-.04em}
+.lock svg{width:1em;height:1em}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
+.nav.scrolled{border-bottom-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;height:76px}
+.nav .logo img{height:38px;width:auto}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0;font:500 15px var(--f-body)}
+.nav ul a{text-decoration:none;color:var(--text)}
+.nav ul a:hover{color:var(--vivo)}
+.nav .btn{padding:12px 18px;font-size:14.5px}
+.menu-btn{display:none;background:none;border:0;width:44px;height:44px;border-radius:12px;cursor:pointer;color:var(--navy)}
+.menu-btn span{display:block;height:2px;background:currentColor;margin:5px 10px;border-radius:2px}
+
+/* HERO */
+.hero{padding-block:56px 96px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(46px,7vw,92px);font-weight:700;letter-spacing:-.04em;line-height:.96}
+.hero .lede{margin-top:24px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.hero .meta{margin-top:36px;display:flex;flex-wrap:wrap;gap:8px 22px;color:var(--muted);font-size:14.5px}
+.hero .meta span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:99px;background:var(--vivo);margin-right:8px;vertical-align:1px}
+.panel{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:32px;background:var(--navy);overflow:hidden}
+.panel .big{position:absolute;width:118%;height:118%;right:-36%;bottom:-24%;color:var(--navy-2)}
+.panel .card{position:absolute;left:8%;right:8%;bottom:8%;background:#fff;border-radius:20px;padding:20px 22px;display:grid;gap:12px}
+.panel .card b{font:700 20px/1.1 var(--f-display);letter-spacing:-.02em;color:var(--navy)}
+.panel .card p{font-size:14px;color:var(--muted)}
+.bar{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;font:600 11.5px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.bar i{display:block;height:12px;border-radius:99px;background:var(--niebla);position:relative;overflow:hidden}
+.bar i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--p);border-radius:99px;background:linear-gradient(90deg,var(--navy),var(--vivo))}
+.panel .sticker{position:absolute;top:8%;left:8%;background:var(--sol);color:var(--black)}
+.panel .ea{position:absolute;top:8%;right:8%;color:#fff;font-size:28px}
+
+/* ETAPAS */
+.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.stage{border:1.5px solid var(--line);border-radius:var(--r);padding:30px;display:flex;flex-direction:column;gap:16px;text-decoration:none;transition:border-color .2s,transform .2s;background:#fff}
+.stage:hover{border-color:var(--vivo);transform:translateY(-4px)}
+.stage .who{font:600 13px/1 var(--f-body);color:var(--muted)}
+.stage h3{font-size:28px;font-weight:700}
+.stage p{color:var(--muted);font-size:16px;flex:1}
+.stage .go{font-weight:600;color:var(--vivo)}
+.stage .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center}
+.stage .ic svg{width:26px;height:26px}
+
+/* PROGRAMAS */
+.programs{background:var(--niebla)}
+.prog-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.prog{background:#fff;border-radius:28px;padding:36px;display:grid;gap:22px;align-content:start}
+.prog .tag{justify-self:start;font:600 12px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;border-radius:99px;background:var(--niebla);color:var(--navy)}
+.prog h3{font-size:clamp(28px,3.2vw,38px);font-weight:700}
+.prog>p{color:var(--muted)}
+.svc{display:grid;border-top:1px solid var(--line)}
+.svc div{display:grid;grid-template-columns:28px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+.svc b{font:600 18px/1.2 var(--f-display);letter-spacing:-.01em;color:var(--navy)}
+.svc span{display:block;color:var(--muted);font-size:15px;margin-top:4px}
+.svc svg{width:22px;height:22px;color:var(--vivo);margin-top:2px}
+.prog.dark{background:var(--navy);color:#fff}
+.prog.dark .tag{background:rgba(255,255,255,.1);color:#fff}
+.prog.dark>p,.prog.dark .svc span{color:#B9C7EA}
+.prog.dark .svc,.prog.dark .svc div{border-color:rgba(255,255,255,.14)}
+.prog.dark .svc b{color:#fff}
+.prog.dark .svc svg{color:var(--cielo)}
+.goal{background:rgba(255,255,255,.08);border-radius:16px;padding:16px 18px;font-size:15px;color:#DCE6FF}
+.goal b{color:#fff}
+
+/* METODOLOGÍAS (negro) */
+.methods{background:var(--black);color:#fff;padding-block:80px;overflow:hidden}
+.methods .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center}
+.methods h2{font-size:clamp(32px,4.4vw,50px);font-weight:700}
+.methods h2 .mk{--mkc:var(--vivo)}
+.methods p{color:#A6ABBD;margin-top:18px;max-width:46ch}
+.cloud{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.cloud .sticker{font-size:17px;padding:13px 18px}
+.s-w{background:#fff;color:var(--black)}.s-v{background:var(--vivo);color:#fff}.s-n{background:var(--navy);color:#fff;box-shadow:inset 0 0 0 1px #24346A}.s-s{background:var(--sol);color:var(--black)}.s-o{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px #3A3D4A}
+
+/* ENTIDADES */
+.entities .top{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:48px}
+.who-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:20px}
+.who-c{background:var(--niebla);border-radius:var(--r);padding:28px;display:grid;gap:10px;align-content:start}
+.who-c .k{font:700 14px/1 var(--f-display);letter-spacing:.04em;color:var(--vivo)}
+.who-c h3{font-size:22px;font-weight:600;color:var(--navy)}
+.who-c p{color:var(--muted);font-size:15.5px}
+.ent-svc{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--navy);color:#fff;border-radius:28px;overflow:hidden}
+.ent-svc div{padding:32px;display:grid;gap:10px;align-content:start;border-right:1px solid rgba(255,255,255,.12)}
+.ent-svc div:last-child{border-right:0}
+.ent-svc h3{font-size:22px;font-weight:600}
+.ent-svc p{color:#B9C7EA;font-size:15.5px}
+.ent-svc .n{font:600 13px/1 var(--f-body);color:var(--cielo);letter-spacing:.08em}
+.lab{margin-top:20px;border:1.5px solid var(--line);border-radius:28px;padding:32px;display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center}
+.lab .ic{width:72px;height:72px;border-radius:22px;background:var(--black);display:grid;place-items:center;color:#fff}
+.lab .ic svg{width:34px;height:34px}
+.lab h3{font-size:24px;font-weight:700;color:var(--navy)}
+.lab p{color:var(--muted);margin-top:6px;max-width:62ch}
+
+/* PROPÓSITO */
+.purpose{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+.purpose .bg{position:absolute;width:640px;height:640px;left:-180px;top:-120px;color:var(--navy-2)}
+.purpose .wrap{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:start}
+.purpose .eyebrow{color:var(--cielo)}
+.purpose h2{font-size:clamp(34px,4.8vw,58px);font-weight:700;margin-top:16px}
+.purpose h2 .mk{--mkc:var(--vivo)}
+.purpose .lede{color:#B9C7EA;margin-top:22px}
+.values{display:grid;gap:0;border-top:1px solid rgba(255,255,255,.16)}
+.values div{padding:20px 0;border-bottom:1px solid rgba(255,255,255,.16);display:grid;gap:4px}
+.values b{font:600 22px/1.1 var(--f-display);letter-spacing:-.01em}
+.values span{color:#B9C7EA;font-size:15.5px}
+
+/* VOZ */
+.quotes{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.quote{border-radius:var(--r);padding:26px;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;gap:20px}
+.quote p{font:700 26px/1.05 var(--f-display);letter-spacing:-.025em}
+.quote span{font:600 12px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.q1{background:var(--navy);color:#fff}.q2{background:var(--niebla);color:var(--navy)}.q3{background:var(--black);color:#fff}.q4{background:var(--vivo);color:#fff}
+
+/* CONTACTO */
+.contact{background:var(--niebla)}
+.contact .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.contact h2{font-size:clamp(38px,5.4vw,66px);font-weight:700}
+.contact .lede{margin-top:20px}
+.contact .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.contact .info{margin-top:28px;display:grid;gap:8px;color:var(--muted);font-size:15.5px}
+.contact .info b{color:var(--navy)}
+.diag{background:#fff;border-radius:28px;padding:32px;display:grid;gap:20px}
+.diag h3{font-size:26px;font-weight:700;color:var(--navy)}
+.diag label{font:600 14px var(--f-body);color:var(--navy);display:grid;gap:8px}
+.diag select{font:500 16px var(--f-body);color:var(--text);padding:14px 16px;border-radius:14px;border:1.5px solid var(--line);background:#fff;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--navy) 50%),linear-gradient(135deg,var(--navy) 50%,transparent 50%);background-position:calc(100% - 22px) 50%,calc(100% - 16px) 50%;background-size:6px 6px;background-repeat:no-repeat}
+.result{border-radius:18px;background:var(--navy);color:#fff;padding:22px;display:grid;gap:8px}
+.result small{font:600 12px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--cielo)}
+.result b{font:700 24px/1.1 var(--f-display);letter-spacing:-.02em}
+.result p{color:#B9C7EA;font-size:15px}
+.result a{justify-self:start;margin-top:6px}
+
+/* FOOTER */
+footer{background:var(--black);color:#fff;padding-block:64px 40px}
+footer .wrap{display:grid;gap:40px}
+footer .top{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+footer .slogan{font:700 clamp(28px,4vw,44px)/1 var(--f-display);letter-spacing:-.03em;max-width:16ch}
+footer .lock{font-size:44px}
+footer .cols{display:flex;gap:48px;flex-wrap:wrap;color:#A6ABBD;font-size:15px}
+footer .cols div{display:grid;gap:8px}
+footer .cols b{color:#fff;font-weight:600}
+footer .cols a{text-decoration:none}
+footer .cols a:hover{color:#fff}
+footer .legal{border-top:1px solid #23252F;padding-top:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#7B8094;font-size:13.5px}
+
+@media (max-width:960px){
+  section{padding-block:72px}
+  .nav ul,.nav .btn{display:none}
+  .menu-btn{display:block}
+  .nav.open ul{display:grid;position:absolute;top:76px;left:0;right:0;background:#fff;padding:12px max(20px,env(safe-area-inset-left,0px)) 24px;gap:4px;border-bottom:1px solid var(--line);font-size:18px}
+  .nav.open ul a{display:block;padding:12px 0}
+  .hero .wrap,.methods .wrap,.entities .top,.purpose .wrap,.contact .wrap{grid-template-columns:1fr}
+  .panel{aspect-ratio:5/4}
+  .stages,.who-grid,.ent-svc{grid-template-columns:1fr}
+  .ent-svc div{border-right:0;border-bottom:1px solid rgba(255,255,255,.12)}
+  .prog-grid{grid-template-columns:1fr}
+  .quotes{grid-template-columns:1fr 1fr}
+  .lab{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .hero{padding-block:32px 64px}
+  .panel{aspect-ratio:4/5}
+  .prog,.diag,.lab{padding:24px}
+  .quotes{grid-template-columns:1fr}
+  .quote{min-height:150px}
+  .nav .logo img{height:32px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="sym" viewBox="0 0 100 100">
+      <g fill="none" stroke="currentColor" stroke-width="20.6" stroke-linecap="round">
+        <line x1="19.4" y1="36.7" x2="45.6" y2="10.3"/>
+        <line x1="10.6" y1="88.9" x2="54.8" y2="44.8"/>
+        <line x1="62.7" y1="81" x2="89.7" y2="53.7"/>
+      </g>
+    </symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z"/></symbol>
+    <symbol id="i-rocket" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 15c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9-.8-.8-2.1-.8-2.9-.1zM12 15l-3-3a22 22 0 0 1 2-4A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22.4 22.4 0 0 1-4 2zM9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></symbol>
+    <symbol id="i-build" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 10h.01M15 10h.01"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-lab" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3M7 15h10"/></symbol>
+  </defs>
+</svg>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Emprende Ahora, inicio"><img src="assets/logo-navy.png" alt="Emprende Ahora" width="410" height="124"></a>
+    <ul id="menu">
+      <li><a href="#programas">Programas</a></li>
+      <li><a href="#entidades">Entidades</a></li>
+      <li><a href="#proposito">Nosotros</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+    <a class="btn btn-navy" href="#contacto">Quiero emprender</a>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Emprendimiento en el Caribe colombiano</span>
+      <h1 style="margin-top:20px">Un espacio para innovar te <span class="mk">espera.</span></h1>
+      <p class="lede">Te acompañamos a crear un emprendimiento consciente, próspero e innovador, desde la primera idea hasta tus primeras ventas. Con método, retos reales y una comunidad que empuja contigo.</p>
+      <div class="ctas">
+        <a class="btn btn-vivo" href="#etapas">Empieza ahora <svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-ghost" href="#entidades">Soy una entidad</a>
+      </div>
+      <div class="meta"><span>Virtual y presencial</span><span>Metodologías ágiles</span><span>Emprende Ahora S.A.S. BIC</span></div>
+    </div>
+    <div class="panel" aria-hidden="true">
+      <svg class="big"><use href="#sym"/></svg>
+      <span class="sticker">Hecho en el Caribe</span>
+      <span class="ea lock"><svg><use href="#sym"/></svg>EA</span>
+      <div class="card">
+        <b>Tu ruta para emprender</b>
+        <div class="bar">Ideación<i style="--p:100%"></i></div>
+        <div class="bar">Experimento<i style="--p:66%"></i></div>
+        <div class="bar">Marca<i style="--p:38%"></i></div>
+        <div class="bar">Tracción<i style="--p:14%"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="etapas" style="padding-top:0">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">¿En qué etapa estás?</span>
+      <h2 class="h2">Empieza desde donde estás</h2>
+    </div>
+    <div class="stages">
+      <a class="stage" href="#programas">
+        <span class="ic" style="background:var(--niebla);color:var(--navy)"><svg aria-hidden="true"><use href="#i-bulb"/></svg></span>
+        <span class="who">Quiero emprender</span>
+        <h3>Tengo ganas, pero no una idea clara</h3>
+        <p>Descubre tus habilidades, encuentra tu vocación y aterriza una idea de negocio desde cero.</p>
+        <span class="go">Emprendedor potencial →</span>
+      </a>
+      <a class="stage" href="#programas">
+        <span class="ic" style="background:var(--vivo);color:#fff"><svg aria-hidden="true"><use href="#i-rocket"/></svg></span>
+        <span class="who">Ya emprendí</span>
+        <h3>Tengo un negocio y quiero que funcione</h3>
+        <p>Valida con clientes reales, construye un producto mínimo viable y vendible, y logra tracción.</p>
+        <span class="go">Novato y principiante →</span>
+      </a>
+      <a class="stage" href="#entidades">
+        <span class="ic" style="background:var(--navy);color:#fff"><svg aria-hidden="true"><use href="#i-build"/></svg></span>
+        <span class="who">Represento una entidad</span>
+        <h3>Quiero impulsar emprendedores</h3>
+        <p>Universidades, entes públicos y ONG: diseñamos y operamos programas a la medida de tu población.</p>
+        <span class="go">Servicios para entidades →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="programs" id="programas">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Programas</span>
+      <h2 class="h2">Acompañamiento para cada etapa</h2>
+      <p class="lede">Cada servicio se adapta a tus necesidades y al punto en el que estás. Puedes tomarlos por separado o como una ruta completa.</p>
+    </div>
+    <div class="prog-grid">
+      <article class="prog">
+        <span class="tag">Emprendedor potencial</span>
+        <h3>Encuentra tu idea</h3>
+        <p>Para quienes quieren emprender pero aún no tienen clara su idea de negocio. Desarrollas las habilidades blandas para emprender y los fundamentos del método.</p>
+        <div class="svc">
+          <div><svg aria-hidden="true"><use href="#i-check"/></svg><p><b>Webinars</b><span>Resuelve tus primeras dudas con conocimiento validado sobre emprendimiento.</span></p></div>
+          <div><svg aria-hidden="true"><use href="#i-check"/></svg><p><b>Mentorías de ideación</b><span>Asesoría personalizada con Business Blueprint y Purpose-Driven Innovation.</span></p></div>
+          <div><svg aria-hidden="true"><use href="#i-check"/></svg><p><b>Cursos</b><span>Domina las competencias que necesitas para lanzarte.</span></p></div>
+        </div>
+      </article>
+      <article class="prog dark">
+        <span class="tag">Emprendedor novato y principiante</span>
+        <h3>Valida, construye y vende</h3>
+        <p>Mentorías especializadas en metodologías ágiles para diseñar y desarrollar tu producto mínimo viable y vendible.</p>
+        <div class="svc">
+          <div><svg aria-hidden="true"><use href="#i-check"/></svg><p><b>Ideación de negocio</b><span>Identifica los atributos principales de tu idea.</span></p></div>
+          <div><svg aria-hidden="true"><use href="#i-check"/></svg><p><b>Experimentación comercial</b><span>Pon tu idea frente al mercado y ajústala con lo que aprendes.</span></p></div>
+          <div><svg aria-hidden="true"><use href="#i-check"/></svg><p><b>Diseño y desarrollo de marca</b><span>Construye los elementos que hacen única a tu marca.</span></p></div>
+        </div>
+        <p class="goal"><b>La meta:</b> tus primeras interacciones con el mercado y tracción comercial real.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="methods" aria-labelledby="metodos-t">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow" style="color:var(--cielo)">Cómo trabajamos</span>
+      <h2 id="metodos-t" style="margin-top:16px">Método, práctica y <span class="mk">retos.</span></h2>
+      <p>Nada de teoría por la teoría. Usamos metodologías de vanguardia y las aplicamos a tu negocio desde la primera sesión.</p>
+    </div>
+    <div class="cloud">
+      <span class="sticker s-w" style="--rot:-5deg">Lean Startup</span>
+      <span class="sticker s-v" style="--rot:3deg">Design Thinking</span>
+      <span class="sticker s-o" style="--rot:-2deg">Customer Development</span>
+      <span class="sticker s-n" style="--rot:4deg">Jobs To Be Done</span>
+      <span class="sticker s-s" style="--rot:-4deg">Testing Business Ideas</span>
+      <span class="sticker s-o" style="--rot:2deg">Design Sprint</span>
+      <span class="sticker s-w" style="--rot:5deg">Scrum</span>
+      <span class="sticker s-v" style="--rot:-3deg">Purpose-Driven Innovation</span>
+    </div>
+  </div>
+</section>
+
+<section class="entities" id="entidades">
+  <div class="wrap">
+    <div class="top">
+      <div class="head" style="margin:0">
+        <span class="eyebrow">Para entidades</span>
+        <h2 class="h2">No trabajamos solos</h2>
+      </div>
+      <p class="lede">Diseñamos, operamos y co-creamos programas de emprendimiento con organizaciones que quieren dinamizar la economía y el desarrollo de sus territorios.</p>
+    </div>
+    <div class="who-grid">
+      <div class="who-c"><span class="k">Universidades</span><h3>Oficinas de emprendimiento e innovación</h3><p>Instituciones de educación superior con programas de emprendimiento, innovación e investigación aplicada.</p></div>
+      <div class="who-c"><span class="k">Ecosistema</span><h3>Entes públicos, privados y mixtos</h3><p>Organizaciones que dinamizan la economía y los sectores productivos de la región.</p></div>
+      <div class="who-c"><span class="k">Impacto social</span><h3>ONG y fundaciones</h3><p>Organizaciones que trabajan con comunidades vulnerables y desarrollan emprendimiento social.</p></div>
+    </div>
+    <div class="ent-svc">
+      <div><span class="n">SERVICIO 1</span><h3>Operación de programas y proyectos</h3><p>Gestión y soporte antes y después de implementar un programa con Emprende Ahora.</p></div>
+      <div><span class="n">SERVICIO 2</span><h3>Talleres y capacitaciones</h3><p>Herramientas concretas sobre los temas que más pesan en cada emprendimiento.</p></div>
+      <div><span class="n">SERVICIO 3</span><h3>Proyectos especiales</h3><p>Co-creamos con aliados del territorio nuevos formatos y soluciones adaptadas a cada población.</p></div>
+    </div>
+    <div class="lab">
+      <span class="ic"><svg aria-hidden="true"><use href="#i-lab"/></svg></span>
+      <div>
+        <h3>Laboratorio de Prototipado Digital</h3>
+        <p>Recursos, plantillas y acompañamiento para validar productos mínimos viables con el empresariado popular, desplegado en proyectos como los Centros de Innovación Comunitaria (CIC).</p>
+      </div>
+      <a class="btn btn-navy" href="#contacto">Hablemos</a>
+    </div>
+  </div>
+</section>
+
+<section class="purpose" id="proposito">
+  <svg class="bg" aria-hidden="true"><use href="#sym"/></svg>
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Nuestro propósito</span>
+      <h2>Existimos para que más personas emprendan <span class="mk">ahora.</span></h2>
+      <p class="lede">Creemos que el emprendimiento genera nuevas oportunidades laborales y económicas, y trae progreso al Caribe colombiano. Por eso ayudamos a las personas a crear emprendimientos conscientes, prósperos e innovadores.</p>
+    </div>
+    <div class="values">
+      <div><b>Excelencia</b><span>Hacemos las cosas bien y con pasión.</span></div>
+      <div><b>Honestidad</b><span>Actuamos con sinceridad y rectitud todos los días.</span></div>
+      <div><b>Disciplina</b><span>Orden y constancia para cumplir lo que prometemos.</span></div>
+      <div><b>Profesionalismo</b><span>Servicios ajustados a cada persona, con respeto y tolerancia.</span></div>
+    </div>
+  </div>
+</section>
+
+<section aria-label="Frases Emprende Ahora">
+  <div class="wrap">
+    <div class="quotes">
+      <div class="quote q1"><p>Mejor hecho que perfecto.</p><span>Crear</span></div>
+      <div class="quote q2"><p>Si lo puedes visionar, lo puedes inventar.</p><span>Innovación</span></div>
+      <div class="quote q3"><p>No sabes a dónde vas. Empieza igual.</p><span>Iniciativa</span></div>
+      <div class="quote q4"><p>¿Si no es ahora, cuándo?</p><span>Acción</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contacto">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Contacto</span>
+      <h2 style="margin-top:16px">¿Quieres emprender? ¿Por qué no <span class="mk">ahora?</span></h2>
+      <p class="lede">Escríbenos y cuéntanos en qué punto estás. Te respondemos con una ruta clara para empezar.</p>
+      <div class="ctas">
+        <a class="btn btn-vivo" href="https://wa.me/573006536005" target="_blank" rel="noopener">Escríbenos por WhatsApp</a>
+        <a class="btn btn-ghost" href="mailto:ahoraemprendimiento@gmail.com">Enviar un correo</a>
+      </div>
+      <div class="info">
+        <p><b>WhatsApp:</b> +57 300 653 6005</p>
+        <p><b>Correo:</b> ahoraemprendimiento@gmail.com</p>
+        <p><b>Dónde estamos:</b> Caribe colombiano · virtual y presencial</p>
+      </div>
+    </div>
+    <div class="diag">
+      <h3>Diagnóstico rápido</h3>
+      <label for="q-stage">¿En qué punto estás?
+        <select id="q-stage">
+          <option value="idea">Quiero emprender, pero no tengo una idea clara</option>
+          <option value="tengo-idea">Tengo una idea y quiero validarla</option>
+          <option value="negocio">Ya tengo un negocio y necesito crecer</option>
+          <option value="entidad">Represento una universidad u organización</option>
+        </select>
+      </label>
+      <div class="result" id="q-result" aria-live="polite">
+        <small>Te recomendamos</small>
+        <b id="q-title">Emprendedor potencial</b>
+        <p id="q-text">Empieza con un webinar y una mentoría de ideación para descubrir qué negocio va contigo.</p>
+        <a class="btn btn-white" id="q-link" href="#programas">Ver el programa</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="top">
+      <span class="lock" aria-label="EA"><svg aria-hidden="true"><use href="#sym"/></svg>EA</span>
+      <p class="slogan">Un espacio para innovar te espera.</p>
+    </div>
+    <div class="cols">
+      <div><b>Explora</b><a href="#programas">Programas</a><a href="#entidades">Entidades</a><a href="#proposito">Nosotros</a></div>
+      <div><b>Contacto</b><a href="https://wa.me/573006536005" target="_blank" rel="noopener">WhatsApp +57 300 653 6005</a><span>Caribe colombiano</span></div>
+    </div>
+    <div class="legal"><span>© 2026 Emprende Ahora S.A.S. BIC</span><span>Emprendimientos conscientes, prósperos e innovadores</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nav=document.getElementById('nav'),btn=document.getElementById('menuBtn');
+  window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>8)},{passive:true});
+  btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o)});
+  document.querySelectorAll('#menu a').forEach(function(a){a.addEventListener('click',function(){nav.classList.remove('open');btn.setAttribute('aria-expanded','false')})});
+
+  var R={
+    'idea':['Emprendedor potencial','Empieza con un webinar y una mentoría de ideación para descubrir qué negocio va contigo.','#programas','Ver el programa'],
+    'tengo-idea':['Ideación de negocio','Aterriza los atributos de tu idea y prepárala para salir a probarla con clientes reales.','#programas','Ver el programa'],
+    'negocio':['Experimentación comercial','Mide cómo responde el mercado, ajusta tu oferta y construye una marca que venda.','#programas','Ver el programa'],
+    'entidad':['Servicios para entidades','Diseñamos y operamos programas a la medida de tu población, con talleres y proyectos especiales.','#entidades','Ver servicios']
+  };
+  var s=document.getElementById('q-stage');
+  s.addEventListener('change',function(){
+    var r=R[s.value];
+    document.getElementById('q-title').textContent=r[0];
+    document.getElementById('q-text').textContent=r[1];
+    var l=document.getElementById('q-link');l.href=r[2];l.textContent=r[3];
+  });
+})();
+</script>
+</body>
+</html>
