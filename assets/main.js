@@ -7,10 +7,10 @@
   var s=document.getElementById('q-stage');
   if(!s)return;
   var R={
-    'idea':['Emprendedor potencial','Empieza con los webinars y una mentoría de ideación para descubrir qué negocio va contigo.','programas.html#potencial','Ver el programa'],
-    'tengo-idea':['Ideación de negocio','En 4 semanas aterrizas tu idea, defines a tu cliente y diseñas tu primer prototipo.','programas.html#novato','Ver el programa'],
-    'negocio':['Experimentación comercial','Pruebas tu producto con clientes reales, ajustas tu oferta y construyes una marca que vende.','programas.html#novato','Ver el programa'],
-    'entidad':['Servicios para entidades','Diseñamos y operamos programas a la medida de tu población, con talleres y proyectos especiales.','entidades.html','Ver servicios']
+    'operar':['Programas de mentoría empresarial','Operamos el programa completo y te reportamos el avance de cada empresa atendida.','servicios.html#mentorias','Ver el servicio'],
+    'disenar':['Diseño de modelos y rutas formativas','Creamos la metodología, el currículo y el material de tu programa, listos para transferir.','servicios.html#modelos','Ver el servicio'],
+    'digital':['Plataformas y herramientas digitales','Plataformas de formación, diagnósticos en línea y tableros de seguimiento a la medida.','servicios.html#digital','Ver el servicio'],
+    'emprendedor':['Programas abiertos','Te contamos qué convocatorias gratuitas están abiertas y cómo inscribirte.','emprendedores.html','Ver convocatorias']
   };
   s.addEventListener('change',function(){
     var r=R[s.value];

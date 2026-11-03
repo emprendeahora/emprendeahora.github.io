@@ -351,3 +351,56 @@ footer .legal{border-top:1px solid #23252F;padding-top:24px;display:flex;justify
 }
 .contact .wrap>*,.hero .wrap>*,.split>*,.page-hero .wrap>*{min-width:0}
 .diag select{width:100%;max-width:100%;text-overflow:ellipsis}
+
+/* ===== v4: enfoque entidades ===== */
+.allies{padding-block:36px;border-bottom:1px solid var(--line)}
+.allies .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px}
+.allies small{font:600 12px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);flex-basis:100%}
+.allies span{font:600 17px/1.2 var(--f-display);color:var(--navy);letter-spacing:-.01em;opacity:.85}
+.svc-list{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.svc-card{border:1.5px solid var(--line);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:12px;background:#fff;text-decoration:none;transition:border-color .2s,transform .2s}
+.svc-card:hover{border-color:var(--vivo);transform:translateY(-4px)}
+.svc-card .n{font:600 13px/1 var(--f-body);letter-spacing:.08em;color:var(--vivo)}
+.svc-card h3{font-size:24px;font-weight:700;color:var(--navy)}
+.svc-card p{color:var(--muted);font-size:15.5px;flex:1}
+.svc-card .go{font-weight:600;color:var(--vivo)}
+.svc-card.dark{background:var(--navy);border-color:var(--navy)}
+.svc-card.dark h3{color:#fff}.svc-card.dark p{color:#B9C7EA}.svc-card.dark .n,.svc-card.dark .go{color:var(--cielo)}
+.case-hero{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:32px;overflow:hidden;background:var(--navy);color:#fff}
+.case-hero+.case-hero{margin-top:24px}
+.case-hero .txt{padding:44px;display:grid;gap:16px;align-content:start}
+.case-hero .who{font:600 13px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--cielo)}
+.case-hero h3{font-size:clamp(28px,3.4vw,40px);font-weight:700}
+.case-hero p{color:#B9C7EA}
+.case-hero .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+.case-hero .nums b{display:block;font:700 34px/1 var(--f-display);letter-spacing:-.03em;color:#fff}
+.case-hero .nums span{font-size:13.5px;color:#B9C7EA}
+.case-hero .side{background:var(--navy-2);padding:44px;display:grid;gap:12px;align-content:start}
+.case-hero .side h4{margin:0;font:600 13px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--cielo)}
+.case-hero .side ul{margin:0;padding-left:18px;display:grid;gap:8px;color:#E3EAFB;font-size:15.5px}
+.case-hero.black{background:var(--black)}.case-hero.black .side{background:#16161D}
+.case-hero a.btn{justify-self:start}
+.steps6{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:s6;padding:0;margin:0}
+.steps6 li{list-style:none;background:#fff;border-radius:22px;padding:24px;display:grid;gap:8px;align-content:start}
+.steps6 li::before{counter-increment:s6;content:counter(s6);width:36px;height:36px;border-radius:99px;display:grid;place-items:center;background:var(--navy);color:#fff;font:700 15px/1 var(--f-display)}
+.steps6 h3{font-size:20px;font-weight:700;color:var(--navy)}
+.steps6 p{color:var(--muted);font-size:15px}
+.open-call{border-radius:28px;background:var(--sol);color:var(--black);padding:36px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.open-call .tag{font:600 12px/1 var(--f-body);letter-spacing:.1em;text-transform:uppercase}
+.open-call h3{font-size:clamp(24px,3vw,34px);font-weight:700;margin-top:10px}
+.open-call p{margin-top:8px;max-width:60ch}
+@media (max-width:960px){
+  .svc-list,.steps6{grid-template-columns:1fr 1fr}
+  .case-hero,.open-call{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .svc-list,.steps6{grid-template-columns:1fr}
+  .case-hero .txt,.case-hero .side,.open-call{padding:24px}
+  .case-hero .nums{grid-template-columns:1fr 1fr}
+}
+.team.team5{grid-template-columns:repeat(5,1fr)}
+@media (max-width:960px){.team.team5{grid-template-columns:1fr 1fr}}
+.topics.topics4{grid-template-columns:repeat(4,1fr)}
+.topics.topics4 .topic{background:#fff}
+@media (max-width:960px){.topics.topics4{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.topics.topics4{grid-template-columns:1fr}}
