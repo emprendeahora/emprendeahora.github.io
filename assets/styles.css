@@ -404,3 +404,51 @@ footer .legal{border-top:1px solid #23252F;padding-top:24px;display:flex;justify
 .topics.topics4 .topic{background:#fff}
 @media (max-width:960px){.topics.topics4{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.topics.topics4{grid-template-columns:1fr}}
+
+/* ===== v5: gráficos de marca en lugar de fotos ===== */
+.art{position:relative;margin:0;border-radius:32px;overflow:hidden;contain:paint;background:var(--navy);color:#fff;aspect-ratio:4/3;max-width:100%;isolation:isolate}
+.art.tall{aspect-ratio:4/5}
+.art.black{background:var(--black)}
+.art.niebla{background:var(--niebla);color:var(--navy)}
+.art.vivo{background:var(--vivo)}
+.art.sol{background:var(--sol);color:var(--black)}
+.art .symbig{position:absolute;width:115%;height:115%;right:-38%;bottom:-30%;color:var(--navy-2);z-index:-1}
+.art.black .symbig{color:#16161D}
+.art.vivo .symbig{color:#3D78FF}
+.art.sol .symbig{color:#FFD466}
+.art.niebla .symbig{color:#E0E8FB}
+.art .cap{position:absolute;left:var(--x);top:var(--y);width:var(--w,50%);height:var(--h,16%);border-radius:999px;background:var(--c,var(--vivo));transform:rotate(-45deg);z-index:-1}
+.art .center{position:absolute;inset:0;display:grid;place-items:center;padding:8%}
+.art .bignum{font:800 clamp(64px,10vw,128px)/.9 var(--f-display);letter-spacing:-.05em}
+.art .biglbl{font:600 clamp(16px,1.8vw,20px)/1.2 var(--f-display);margin-top:10px;max-width:16ch;opacity:.9}
+.art .chips{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:12px;padding:8%}
+.art .chip{font:700 clamp(15px,1.6vw,19px)/1 var(--f-display);padding:14px 20px;border-radius:999px;background:#fff;color:var(--navy);transform:rotate(var(--r,-3deg));margin-left:var(--ml,0)}
+.art .chip.v{background:var(--vivo);color:#fff}.art .chip.s{background:var(--sol);color:var(--black)}.art .chip.n{background:var(--navy-2);color:#fff}.art .chip.k{background:var(--black);color:#fff}
+.art .path{position:absolute;inset:0;display:grid;align-content:center;gap:14px;padding:9%}
+.art .path div{display:grid;grid-template-columns:120px 1fr;align-items:center;gap:14px;font:600 14px/1 var(--f-body);color:#fff}
+.art .path i{display:block;height:22px;border-radius:999px;background:rgba(255,255,255,.22);position:relative;overflow:hidden}
+.art .path i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--p);border-radius:999px;background:#fff}
+.art .path div.on i::after{background:var(--sol)}
+.art .lockup{font-size:clamp(72px,10vw,120px);color:#fff}
+.art .quote{font:800 clamp(34px,4.6vw,54px)/.98 var(--f-display);letter-spacing:-.035em;max-width:11ch}
+.mock{position:absolute;inset:7%;background:#fff;border-radius:22px;padding:22px;display:grid;gap:12px;align-content:start;color:var(--navy);box-shadow:0 20px 50px -20px rgba(2,38,102,.35)}
+.mock .top{display:flex;justify-content:space-between;align-items:center;gap:10px;font:600 12px/1.2 var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mock .top em{font-style:normal;background:var(--sol);color:var(--black);padding:6px 10px;border-radius:999px;letter-spacing:0;text-transform:none}
+.mock .score{display:flex;align-items:baseline;gap:8px}
+.mock .score b{font:800 52px/1 var(--f-display);letter-spacing:-.04em}
+.mock .score span{color:var(--muted);font-size:14px}
+.mock .row{display:grid;grid-template-columns:110px 1fr 34px;gap:10px;align-items:center;font:500 13px/1.2 var(--f-body)}
+.mock .row i{display:block;height:10px;border-radius:999px;background:var(--niebla);position:relative;overflow:hidden}
+.mock .row i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--p);border-radius:999px;background:linear-gradient(90deg,var(--navy),var(--vivo))}
+.mock .row span:last-child{text-align:right;color:var(--muted)}
+.mock .field{border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:4px}
+.mock .field small{font:600 11px/1 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--vivo)}
+.mock .field span{font-size:14px;color:var(--text)}
+.mock .note{font-size:12px;color:var(--muted)}
+.page-hero .art{aspect-ratio:4/3}
+@media (max-width:560px){
+  .art .path div{grid-template-columns:96px 1fr;font-size:13px}
+  .mock{inset:5%;padding:16px;gap:9px}
+  .mock .score b{font-size:40px}
+  .mock .row{grid-template-columns:90px 1fr 30px;font-size:12px}
+}
