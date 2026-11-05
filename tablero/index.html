@@ -188,7 +188,7 @@ const avatar = (p,cls='') => p ? `<span class="av ${cls}" style="background:${p.
 const pct = t => { const s=t.subtasks||[]; return s.length ? Math.round(s.filter(x=>x.d).length/s.length*100) : (t.status==='done'?100:0); };
 const isLate = t => t.status!=='done' && t.end && d2n(t.end)<todayN();
 
-function nd(s){ if(!s) return ''; s=String(s); if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; const d=new Date(s); if(isNaN(d)) return ''; return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function nd(s){ if(!s) return ''; s=String(s); if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; const ms=Date.parse(s); if(isNaN(ms)) return ''; const d=new Date(ms+12*36e5); return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0'); }
 function norm(j){ j=j||{}; const o={people:j.people||[],projects:j.projects||[],tasks:j.tasks||[]}; o.tasks.forEach(t=>{ t.start=nd(t.start); t.end=nd(t.end); if(!Array.isArray(t.assignees)) t.assignees=[]; if(!Array.isArray(t.tags)) t.tags=[]; if(!Array.isArray(t.subtasks)) t.subtasks=[]; }); return o; }
 
 function seed(){
