@@ -119,6 +119,12 @@ table.list{width:100%;border-collapse:collapse;background:var(--panel);border-ra
 .mfoot{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
 .person{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
 .person div.i{flex:1;min-width:0}.person small{color:var(--muted);display:block}
+.cnum{font-size:22px;font-weight:800;letter-spacing:-.02em;display:inline-block;min-width:26px}
+.hc{text-align:center;font-weight:700;border-radius:8px;padding:6px 0;min-width:44px}
+.crow td{vertical-align:middle}.crow td:first-child{min-width:240px}.crow td:first-child strong{white-space:nowrap}
+.det td{background:var(--panel2);border-top:0}
+.drow{display:flex;gap:14px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;cursor:pointer}
+.drow:last-child{border-bottom:0}.drow strong{flex:1;min-width:180px}
 @media(max-width:900px){.board{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}.stats{gap:20px}}
 </style>
 </head>
@@ -182,6 +188,9 @@ const avatar = (p,cls='') => p ? `<span class="av ${cls}" style="background:${p.
 const pct = t => { const s=t.subtasks||[]; return s.length ? Math.round(s.filter(x=>x.d).length/s.length*100) : (t.status==='done'?100:0); };
 const isLate = t => t.status!=='done' && t.end && d2n(t.end)<todayN();
 
+function nd(s){ if(!s) return ''; s=String(s); if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; const d=new Date(s); if(isNaN(d)) return ''; return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function norm(j){ j=j||{}; const o={people:j.people||[],projects:j.projects||[],tasks:j.tasks||[]}; o.tasks.forEach(t=>{ t.start=nd(t.start); t.end=nd(t.end); if(!Array.isArray(t.assignees)) t.assignees=[]; if(!Array.isArray(t.tags)) t.tags=[]; if(!Array.isArray(t.subtasks)) t.subtasks=[]; }); return o; }
+
 function seed(){
   const t=todayN();
   const people=[{id:'p1',name:'Oscar Solano',email:'',color:PALETTE[0]},{id:'p2',name:'María Rojas',email:'',color:PALETTE[2]},{id:'p3',name:'Luis Pérez',email:'',color:PALETTE[3]}];
@@ -200,10 +209,10 @@ function cache(){ try{ localStorage.setItem('tablero',JSON.stringify(S)); }catch
 function setSync(t){ $('#sync').textContent=t; }
 async function load(){
   if(API_URL){
-    try{ setSync('Cargando…'); const r=await fetch(API_URL); S=await r.json(); setSync('Sincronizado'); cache(); return; }
+    try{ setSync('Cargando…'); const r=await fetch(API_URL); S=norm(await r.json()); setSync('Sincronizado'); cache(); return; }
     catch(e){ setSync('Sin conexión'); }
   }
-  try{ const l=JSON.parse(localStorage.getItem('tablero')||'null'); S=l||seed(); }catch(e){ S=seed(); }
+  try{ const l=JSON.parse(localStorage.getItem('tablero')||'null'); S=l?norm(l):seed(); }catch(e){ S=seed(); }
   if(!API_URL) setSync('Modo local');
   cache();
 }
@@ -232,11 +241,14 @@ function fillFilters(){
 
 /* ---------- render ---------- */
 function render(){
-  $('#views').innerHTML=[['kanban','Kanban'],['list','Lista'],['gantt','Gantt']].map(([k,t])=>`<button data-v="${k}" class="${view===k?'on':''}">${t}</button>`).join('');
+  $('#views').innerHTML=[['kanban','Kanban'],['list','Lista'],['gantt','Gantt'],['carga','Carga']].map(([k,t])=>`<button data-v="${k}" class="${view===k?'on':''}">${t}</button>`).join('');
   const ts=filtered();
   $('#stats').innerHTML=[[ts.length,'tareas'],[ts.filter(t=>t.status==='doing').length,'en proceso'],[ts.filter(t=>t.status==='done').length,'hechas'],[ts.filter(isLate).length,'vencidas']].map(([n,l])=>`<div class="stat"><strong>${n}</strong><span>${l}</span></div>`).join('');
   fillFilters();
-  $('#main').innerHTML = view==='kanban'?kanban(ts):view==='list'?list(ts):gantt(ts);
+  let out;
+  try{ out = view==='kanban'?kanban(ts):view==='list'?list(ts):view==='gantt'?gantt(ts):carga(ts); }
+  catch(e){ console.error(e); out=`<div class="empty">No se pudo dibujar esta vista (${esc(e.message)}). Tus datos no se tocaron.</div>`; }
+  $('#main').innerHTML = out;
   if(view==='gantt') bindGantt();
 }
 
@@ -273,8 +285,9 @@ function list(ts){
 }
 
 function gantt(ts){
-  ts=ts.filter(t=>t.start&&t.end);
-  if(!ts.length) return `<div class="empty">Sin fechas todavía. Dale inicio y fin a una tarea para verla aquí.</div>`;
+  const sinF=ts.filter(t=>!(t.start&&t.end)); ts=ts.filter(t=>t.start&&t.end);
+  const nota=sinF.length?`<p class="meta" style="margin:14px 4px 0">${sinF.length} ${sinF.length===1?'tarea sin fechas no aparece':'tareas sin fechas no aparecen'} aquí: ${sinF.slice(0,6).map(t=>esc(t.title)).join(' · ')}${sinF.length>6?' …':''}. Ábrelas y dales inicio y fin.</p>`:'';
+  if(!ts.length) return `<div class="empty">Sin fechas todavía. Dale inicio y fin a una tarea para verla aquí.</div>`+nota;
   ts=[...ts].sort((a,b)=>a.start<b.start?-1:1);
   const td=todayN();
   const min=Math.min(td,...ts.map(t=>d2n(t.start)))-3, max=Math.max(td,...ts.map(t=>d2n(t.end)))+10, n=max-min+1;
@@ -293,7 +306,53 @@ function gantt(ts){
       <div class="gtrack" style="width:${n*GDW}px;background-size:${GDW}px 100%"><i class="today" style="left:${(td-min)*GDW+GDW/2}px"></i>
       <div class="gbar ${t.status}" data-id="${t.id}" style="left:${l}px;width:${w}px"><div class="gprog" style="width:${pct(t)}%"></div><span>${w>110?esc(t.title):''}</span><div class="gh"></div></div></div></div>`;
   }).join('');
-  return `<div class="gwrap" id="gwrap">${head}${rows}</div>`;
+  return `<div class="gwrap" id="gwrap">${head}${rows}</div>`+nota;
+}
+const openC={};
+function mondayN(n){ return n-((new Date(n*DAY).getUTCDay()+6)%7); }
+function cargaData(ts){
+  const td=todayN(), w0=mondayN(td), WK=6;
+  const people=S.people.filter(p=>!F.person||p.id===F.person);
+  const rows=people.map(p=>({p,mine:ts.filter(t=>(t.assignees||[]).includes(p.id))}));
+  if(!F.person){ const un=ts.filter(t=>!(t.assignees||[]).some(id=>person(id))); if(un.length) rows.push({p:{id:'_none',name:'Sin asignar',email:'',color:'#B4B2A9'},mine:un}); }
+  rows.forEach(r=>{
+    const act=r.mine.filter(t=>t.status!=='done');
+    r.act=act; r.doing=act.filter(t=>t.status==='doing').length; r.back=act.filter(t=>t.status==='backlog').length;
+    r.done=r.mine.filter(t=>t.status==='done').length; r.late=act.filter(isLate).length;
+    r.soon=act.filter(t=>t.end&&d2n(t.end)>=td&&d2n(t.end)<=td+7).length;
+    r.undated=act.filter(t=>!t.start||!t.end).length;
+    r.avg=act.length?Math.round(act.reduce((s,t)=>s+pct(t),0)/act.length):0;
+    r.weeks=[];
+    for(let i=0;i<WK;i++){ const ws=w0+7*i, we=ws+6; r.weeks.push(act.filter(t=>t.start&&t.end&&d2n(t.start)<=we&&d2n(t.end)>=ws).length); }
+  });
+  return {rows,w0,WK,td};
+}
+function carga(ts){
+  const {rows,w0,WK}=cargaData(ts);
+  if(!rows.length) return `<div class="empty">Aún no hay colaboradores. Agrégalos en Equipo y asígnales tareas.</div>`;
+  const maxAct=Math.max(1,...rows.map(r=>r.act.length)), maxCell=Math.max(1,...rows.flatMap(r=>r.weeks));
+  const wk=i=>{ const d=new Date((w0+7*i)*DAY); return d.getUTCDate()+' '+MES[d.getUTCMonth()]; };
+  const heads=Array.from({length:WK},(_,i)=>`<th style="text-align:center">${wk(i)}</th>`).join('');
+  const body=rows.map(r=>{
+    const open=openC[r.p.id];
+    const main=`<tr class="r crow" data-cp="${r.p.id}"><td><div style="display:flex;align-items:center;gap:10px">${avatar(r.p,'lg')}<div><strong>${esc(r.p.name)}</strong><div class="meta">${r.undated?r.undated+' sin fechas':'Todas con fechas'} · ${open?'ocultar':'ver tareas'}</div></div></div></td>
+      <td><span class="cnum">${r.act.length}</span><span class="minibar" style="margin-left:10px"><i style="width:${Math.round(r.act.length/maxAct*100)}%"></i></span></td>
+      <td>${r.doing}</td><td>${r.back}</td><td class="${r.late?'late':''}">${r.late}</td><td>${r.soon}</td><td>${r.done}</td><td>${r.avg}%</td>
+      ${r.weeks.map(c=>`<td style="padding:8px 6px"><div class="hc" style="${c?`background:rgba(215,242,58,${(0.18+0.82*c/maxCell).toFixed(2)});color:#12130E`:'color:var(--muted)'}">${c||'·'}</div></td>`).join('')}</tr>`;
+    const det=open?`<tr class="det"><td colspan="${8+WK}"><div style="padding:6px 4px 12px 44px">${r.mine.length?[...r.mine].sort((a,b)=>(a.end||'9')<(b.end||'9')?-1:1).map(t=>{const st=STATUSES.find(s=>s.id===t.status);return `<div class="drow" data-id="${t.id}"><span class="st ${t.status}">${st?st.t:''}</span><strong>${esc(t.title)}</strong><span class="meta">${esc((proj(t.projectId)||{}).name||'Sin proyecto')}</span><span class="meta ${isLate(t)?'late':''}">${t.start&&t.end?fmt(t.start)+' → '+fmt(t.end):'Sin fechas'}</span><span class="meta">${pct(t)}%</span></div>`}).join(''):'<span class="meta">Sin tareas.</span>'}</div></td></tr>`:'';
+    return main+det;
+  }).join('');
+  return `<div class="row" style="margin:0 4px 12px"><div class="meta">Carga = tareas activas (Backlog y En proceso) de cada persona. Las semanas muestran cuántas activas coinciden con esas fechas.</div><button class="btn sm" id="csv">Descargar CSV</button></div>
+  <div class="gwrap"><table class="list" style="min-width:980px"><thead><tr><th style="cursor:default">Persona</th><th style="cursor:default">Activas</th><th style="cursor:default">En proceso</th><th style="cursor:default">Backlog</th><th style="cursor:default">Vencidas</th><th style="cursor:default">Vencen en 7 días</th><th style="cursor:default">Hechas</th><th style="cursor:default">Avance</th>${heads}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+function csvCarga(){
+  const {rows,w0,WK}=cargaData(filtered());
+  const wk=i=>n2d(w0+7*i);
+  const head=['Persona','Correo','Activas','En proceso','Backlog','Vencidas','Vencen en 7 dias','Hechas','Avance promedio %','Activas sin fechas',...Array.from({length:WK},(_,i)=>'Semana '+wk(i))];
+  const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const lines=[head,...rows.map(r=>[r.p.name,r.p.email||'',r.act.length,r.doing,r.back,r.late,r.soon,r.done,r.avg,r.undated,...r.weeks])].map(l=>l.map(q).join(','));
+  const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='carga-equipo-'+n2d(todayN())+'.csv'; document.body.appendChild(a); a.click(); a.remove();
 }
 function bindGantt(){
   const w=$('#gwrap'); if(!w) return;
@@ -397,6 +456,9 @@ document.addEventListener('click',e=>{
   if((el=g('[data-sort]'))){ const k=el.dataset.sort; sort=sort.k===k?{k,d:-sort.d}:{k,d:1}; render(); return; }
   if((el=g('[data-open]'))){ openEditor(el.dataset.open); return; }
   if((el=g('.card'))&&view==='kanban'){ openEditor(el.dataset.id); return; }
+  if((el=g('[data-cp]'))){ const id=el.dataset.cp; openC[id]=!openC[id]; render(); return; }
+  if(g('#csv')){ csvCarga(); return; }
+  if((el=g('.drow'))){ openEditor(el.dataset.id); return; }
   if((el=g('tr.r'))){ openEditor(el.dataset.id); return; }
   /* modal */
   if(e.target.id==='mbg'||g('#eCancel')||g('#tClose')){ const wasTeam=!!g('#tClose'); closeModal(); if(wasTeam) render(); return; }
@@ -432,7 +494,7 @@ document.addEventListener('drop',e=>{ const c=e.target.closest&&e.target.closest
 (async()=>{
   try{ const th=localStorage.getItem('tablero-theme'); if(th){ document.documentElement.dataset.theme=th; $('#theme').textContent=th==='light'?'Oscuro':'Claro'; } }catch(e){}
   await load(); render();
-  if(API_URL) setInterval(async()=>{ if($('#mbg')||dragId) return; try{ const r=await fetch(API_URL); S=await r.json(); cache(); setSync('Sincronizado'); render(); }catch(e){ setSync('Sin conexión'); } },30000);
+  if(API_URL) setInterval(async()=>{ if($('#mbg')||dragId) return; try{ const r=await fetch(API_URL); S=norm(await r.json()); cache(); setSync('Sincronizado'); render(); }catch(e){ setSync('Sin conexión'); } },30000);
 })();
 </script>
 </body>
