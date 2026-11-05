@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://emprendeahora.com.co/sitemap.xml
