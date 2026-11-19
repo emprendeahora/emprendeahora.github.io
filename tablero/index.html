@@ -41,7 +41,7 @@ h1 b{background:var(--lima);color:var(--carbon);padding:0 .15em;border-radius:.1
 .filters select,.filters input{background:transparent;border:1px solid var(--line);border-radius:999px;padding:8px 16px;outline:none;min-width:160px}
 .filters input:focus,.filters select:focus{border-color:var(--ink)}
 .filters option{color:#12130E}
-.board{display:grid;grid-template-columns:repeat(3,minmax(280px,1fr));gap:18px;align-items:start}
+.board{display:grid;grid-template-columns:repeat(4,minmax(240px,1fr));gap:18px;align-items:start}
 .col{background:var(--panel);border-radius:var(--r);padding:16px;min-height:200px;border:2px solid transparent}
 .col.over{border-color:var(--lima)}
 .col-h{display:flex;justify-content:space-between;align-items:baseline;padding:4px 6px 14px}
@@ -76,7 +76,7 @@ table.list{width:100%;border-collapse:collapse;background:var(--panel);border-ra
 .list td{padding:14px 16px;border-top:1px solid var(--line);vertical-align:middle}
 .list tr.r{cursor:pointer}.list tr.r:hover td{background:var(--panel2)}
 .st{font-size:12px;font-weight:600;padding:3px 11px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
-.st.doing{background:var(--lima);border-color:var(--lima);color:var(--carbon)}.st.done{background:var(--inv);color:var(--inv-ink)}
+.st.review{background:var(--panel2);border-color:var(--ink)}.st.doing{background:var(--lima);border-color:var(--lima);color:var(--carbon)}.st.done{background:var(--inv);color:var(--inv-ink)}
 .minibar{width:90px;height:5px;border-radius:99px;background:var(--panel2);overflow:hidden;display:inline-block;vertical-align:middle;margin-right:8px}.minibar i{display:block;height:100%;background:var(--lima)}
 .gwrap{background:var(--panel);border-radius:var(--r);overflow:auto;max-height:70vh}
 .ghead,.grow{display:flex;min-width:max-content}
@@ -91,7 +91,7 @@ table.list{width:100%;border-collapse:collapse;background:var(--panel);border-ra
 .ghead .glabel{z-index:5}
 .today{position:absolute;top:0;bottom:0;width:2px;background:var(--lima);z-index:1}
 .gbar{position:absolute;top:10px;height:28px;border-radius:99px;border:1px solid var(--ink);background:var(--bg);cursor:grab;overflow:hidden;z-index:2;display:flex;align-items:center}
-.gbar.doing{border-color:var(--ink)}
+.gbar.doing{border-color:var(--ink)}.gbar.review{border-style:dashed;border-width:2px}
 .gprog{position:absolute;inset:0 auto 0 0;background:var(--lima)}
 .gbar span{position:relative;font-size:12px;font-weight:600;padding:0 14px;white-space:nowrap;color:var(--carbon);pointer-events:none}
 .gh{position:absolute;right:0;top:0;bottom:0;width:10px;cursor:ew-resize;background:rgba(18,19,14,.25)}
@@ -125,7 +125,17 @@ table.list{width:100%;border-collapse:collapse;background:var(--panel);border-ra
 .det td{background:var(--panel2);border-top:0}
 .drow{display:flex;gap:14px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;cursor:pointer}
 .drow:last-child{border-bottom:0}.drow strong{flex:1;min-width:180px}
-@media(max-width:900px){.board{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}.stats{gap:20px}}
+.lk{display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;align-items:center;margin-bottom:8px}
+.lk input{width:100%;background:transparent;border:1px solid var(--line);border-radius:14px;padding:8px 12px;outline:none}
+.lk input:focus{border-color:var(--ink)}
+.cm{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.cm .b{flex:1;min-width:0}.cm .h{font-size:12px;color:var(--muted)}.cm .h strong{color:var(--ink)}
+.cm .x{white-space:pre-wrap;word-break:break-word;margin-top:2px}
+.cform{border:1px solid var(--line);border-radius:18px;padding:12px;margin-top:8px}
+.cform select,.cform textarea{width:100%;background:transparent;border:1px solid var(--line);border-radius:12px;padding:8px 12px;outline:none;margin-bottom:8px}
+.cform option{color:#12130E}
+@media(max-width:1100px){.board{grid-template-columns:repeat(2,minmax(240px,1fr))}}
+@media(max-width:900px){.board{grid-template-columns:1fr}.lk{grid-template-columns:1fr}.g2,.g3{grid-template-columns:1fr}.stats{gap:20px}}
 </style>
 </head>
 <body>
@@ -161,7 +171,7 @@ table.list{width:100%;border-collapse:collapse;background:var(--panel);border-ra
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbxBTMb3_4FXL-Xy253ejmSqvuBOH8XIVcKFKxhx4q2Sfbd02uYdi9OraayKz6XvnDO_/exec';
-const STATUSES = [{id:'backlog',n:'01',t:'Backlog'},{id:'doing',n:'02',t:'En proceso'},{id:'done',n:'03',t:'Hecho'}];
+const STATUSES = [{id:'backlog',n:'01',t:'Backlog'},{id:'doing',n:'02',t:'En proceso'},{id:'review',n:'03',t:'En revisión'},{id:'done',n:'04',t:'Hecho'}];
 const PRI = {alta:'Alta',media:'Media',baja:'Baja'};
 const DAY = 864e5, GDW = 30;
 const PALETTE = ['#D7F23A','#12130E','#8FB8A8','#E0A58F','#A9B6E0','#D9C27A','#C9A0DC','#7FB3D5'];
@@ -188,8 +198,11 @@ const avatar = (p,cls='') => p ? `<span class="av ${cls}" style="background:${p.
 const pct = t => { const s=t.subtasks||[]; return s.length ? Math.round(s.filter(x=>x.d).length/s.length*100) : (t.status==='done'?100:0); };
 const isLate = t => t.status!=='done' && t.end && d2n(t.end)<todayN();
 
+const safeUrl = u => { u=String(u||'').trim(); if(!u) return ''; if(!/^[a-z][a-z0-9+.-]*:/i.test(u)) u='https://'+u; return /^https?:\/\//i.test(u)?u:''; };
+const linkLabel = l => l.t || (()=>{ try{ return new URL(l.u).hostname.replace(/^www\./,''); }catch(e){ return 'Link'; } })();
+const fmtAt = at => { const d=new Date(at); return isNaN(d)?'':d.toLocaleString('es-CO',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}); };
 function nd(s){ if(!s) return ''; s=String(s); if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s; const ms=Date.parse(s); if(isNaN(ms)) return ''; const d=new Date(ms+12*36e5); return d.getUTCFullYear()+'-'+String(d.getUTCMonth()+1).padStart(2,'0')+'-'+String(d.getUTCDate()).padStart(2,'0'); }
-function norm(j){ j=j||{}; const o={people:j.people||[],projects:j.projects||[],tasks:j.tasks||[]}; o.tasks.forEach(t=>{ t.start=nd(t.start); t.end=nd(t.end); if(!Array.isArray(t.assignees)) t.assignees=[]; if(!Array.isArray(t.tags)) t.tags=[]; if(!Array.isArray(t.subtasks)) t.subtasks=[]; }); return o; }
+function norm(j){ j=j||{}; const o={people:j.people||[],projects:j.projects||[],tasks:j.tasks||[]}; o.tasks.forEach(t=>{ t.start=nd(t.start); t.end=nd(t.end); if(!Array.isArray(t.assignees)) t.assignees=[]; if(!Array.isArray(t.tags)) t.tags=[]; if(!Array.isArray(t.subtasks)) t.subtasks=[]; if(!Array.isArray(t.links)) t.links=[]; if(!Array.isArray(t.comments)) t.comments=[]; if(!t.links.length&&t.link) t.links=[{u:t.link,t:'Entregable'}]; }); return o; }
 
 function seed(){
   const t=todayN();
@@ -243,7 +256,7 @@ function fillFilters(){
 function render(){
   $('#views').innerHTML=[['kanban','Kanban'],['list','Lista'],['gantt','Gantt'],['carga','Carga']].map(([k,t])=>`<button data-v="${k}" class="${view===k?'on':''}">${t}</button>`).join('');
   const ts=filtered();
-  $('#stats').innerHTML=[[ts.length,'tareas'],[ts.filter(t=>t.status==='doing').length,'en proceso'],[ts.filter(t=>t.status==='done').length,'hechas'],[ts.filter(isLate).length,'vencidas']].map(([n,l])=>`<div class="stat"><strong>${n}</strong><span>${l}</span></div>`).join('');
+  $('#stats').innerHTML=[[ts.length,'tareas'],[ts.filter(t=>t.status==='doing').length,'en proceso'],[ts.filter(t=>t.status==='review').length,'en revisión'],[ts.filter(t=>t.status==='done').length,'hechas'],[ts.filter(isLate).length,'vencidas']].map(([n,l])=>`<div class="stat"><strong>${n}</strong><span>${l}</span></div>`).join('');
   fillFilters();
   let out;
   try{ out = view==='kanban'?kanban(ts):view==='list'?list(ts):view==='gantt'?gantt(ts):carga(ts); }
@@ -265,7 +278,8 @@ function card(t){
     <div class="foot">
       <div class="avs">${shown.map(x=>avatar(x)).join('')}${extra>0?`<span class="av" style="background:var(--panel2);color:var(--ink)">+${extra}</span>`:''}</div>
       <div class="meta ${isLate(t)?'late':''}">${fmt(t.start)} → ${fmt(t.end)}</div>
-      ${t.link?`<a class="link meta" href="${esc(t.link)}" target="_blank" rel="noopener" data-stop="1">Entregable ↗</a>`:''}
+      ${(()=>{ const ls=(t.links||[]).filter(l=>safeUrl(l.u)); return ls.length?`<a class="link meta" href="${esc(safeUrl(ls[0].u))}" target="_blank" rel="noopener" data-stop="1">${esc(linkLabel(ls[0]))} ↗</a>${ls.length>1?`<span class="meta">+${ls.length-1}</span>`:''}`:''; })()}
+      ${(t.comments||[]).length?`<span class="meta" title="Comentarios de seguimiento">💬 ${t.comments.length}</span>`:''}
     </div></div>`;
 }
 function kanban(ts){
@@ -317,7 +331,7 @@ function cargaData(ts){
   if(!F.person){ const un=ts.filter(t=>!(t.assignees||[]).some(id=>person(id))); if(un.length) rows.push({p:{id:'_none',name:'Sin asignar',email:'',color:'#B4B2A9'},mine:un}); }
   rows.forEach(r=>{
     const act=r.mine.filter(t=>t.status!=='done');
-    r.act=act; r.doing=act.filter(t=>t.status==='doing').length; r.back=act.filter(t=>t.status==='backlog').length;
+    r.act=act; r.doing=act.filter(t=>t.status==='doing').length; r.rev=act.filter(t=>t.status==='review').length; r.back=act.filter(t=>t.status==='backlog').length;
     r.done=r.mine.filter(t=>t.status==='done').length; r.late=act.filter(isLate).length;
     r.soon=act.filter(t=>t.end&&d2n(t.end)>=td&&d2n(t.end)<=td+7).length;
     r.undated=act.filter(t=>!t.start||!t.end).length;
@@ -337,20 +351,20 @@ function carga(ts){
     const open=openC[r.p.id];
     const main=`<tr class="r crow" data-cp="${r.p.id}"><td><div style="display:flex;align-items:center;gap:10px">${avatar(r.p,'lg')}<div><strong>${esc(r.p.name)}</strong><div class="meta">${r.undated?r.undated+' sin fechas':'Todas con fechas'} · ${open?'ocultar':'ver tareas'}</div></div></div></td>
       <td><span class="cnum">${r.act.length}</span><span class="minibar" style="margin-left:10px"><i style="width:${Math.round(r.act.length/maxAct*100)}%"></i></span></td>
-      <td>${r.doing}</td><td>${r.back}</td><td class="${r.late?'late':''}">${r.late}</td><td>${r.soon}</td><td>${r.done}</td><td>${r.avg}%</td>
+      <td>${r.doing}</td><td>${r.rev}</td><td>${r.back}</td><td class="${r.late?'late':''}">${r.late}</td><td>${r.soon}</td><td>${r.done}</td><td>${r.avg}%</td>
       ${r.weeks.map(c=>`<td style="padding:8px 6px"><div class="hc" style="${c?`background:rgba(215,242,58,${(0.18+0.82*c/maxCell).toFixed(2)});color:#12130E`:'color:var(--muted)'}">${c||'·'}</div></td>`).join('')}</tr>`;
-    const det=open?`<tr class="det"><td colspan="${8+WK}"><div style="padding:6px 4px 12px 44px">${r.mine.length?[...r.mine].sort((a,b)=>(a.end||'9')<(b.end||'9')?-1:1).map(t=>{const st=STATUSES.find(s=>s.id===t.status);return `<div class="drow" data-id="${t.id}"><span class="st ${t.status}">${st?st.t:''}</span><strong>${esc(t.title)}</strong><span class="meta">${esc((proj(t.projectId)||{}).name||'Sin proyecto')}</span><span class="meta ${isLate(t)?'late':''}">${t.start&&t.end?fmt(t.start)+' → '+fmt(t.end):'Sin fechas'}</span><span class="meta">${pct(t)}%</span></div>`}).join(''):'<span class="meta">Sin tareas.</span>'}</div></td></tr>`:'';
+    const det=open?`<tr class="det"><td colspan="${9+WK}"><div style="padding:6px 4px 12px 44px">${r.mine.length?[...r.mine].sort((a,b)=>(a.end||'9')<(b.end||'9')?-1:1).map(t=>{const st=STATUSES.find(s=>s.id===t.status);return `<div class="drow" data-id="${t.id}"><span class="st ${t.status}">${st?st.t:''}</span><strong>${esc(t.title)}</strong><span class="meta">${esc((proj(t.projectId)||{}).name||'Sin proyecto')}</span><span class="meta ${isLate(t)?'late':''}">${t.start&&t.end?fmt(t.start)+' → '+fmt(t.end):'Sin fechas'}</span><span class="meta">${pct(t)}%</span></div>`}).join(''):'<span class="meta">Sin tareas.</span>'}</div></td></tr>`:'';
     return main+det;
   }).join('');
-  return `<div class="row" style="margin:0 4px 12px"><div class="meta">Carga = tareas activas (Backlog y En proceso) de cada persona. Las semanas muestran cuántas activas coinciden con esas fechas.</div><button class="btn sm" id="csv">Descargar CSV</button></div>
-  <div class="gwrap"><table class="list" style="min-width:980px"><thead><tr><th style="cursor:default">Persona</th><th style="cursor:default">Activas</th><th style="cursor:default">En proceso</th><th style="cursor:default">Backlog</th><th style="cursor:default">Vencidas</th><th style="cursor:default">Vencen en 7 días</th><th style="cursor:default">Hechas</th><th style="cursor:default">Avance</th>${heads}</tr></thead><tbody>${body}</tbody></table></div>`;
+  return `<div class="row" style="margin:0 4px 12px"><div class="meta">Carga = tareas activas (Backlog, En proceso y En revisión) de cada persona. Las semanas muestran cuántas activas coinciden con esas fechas.</div><button class="btn sm" id="csv">Descargar CSV</button></div>
+  <div class="gwrap"><table class="list" style="min-width:1040px"><thead><tr><th style="cursor:default">Persona</th><th style="cursor:default">Activas</th><th style="cursor:default">En proceso</th><th style="cursor:default">En revisión</th><th style="cursor:default">Backlog</th><th style="cursor:default">Vencidas</th><th style="cursor:default">Vencen en 7 días</th><th style="cursor:default">Hechas</th><th style="cursor:default">Avance</th>${heads}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
 function csvCarga(){
   const {rows,w0,WK}=cargaData(filtered());
   const wk=i=>n2d(w0+7*i);
-  const head=['Persona','Correo','Activas','En proceso','Backlog','Vencidas','Vencen en 7 dias','Hechas','Avance promedio %','Activas sin fechas',...Array.from({length:WK},(_,i)=>'Semana '+wk(i))];
+  const head=['Persona','Correo','Activas','En proceso','En revision','Backlog','Vencidas','Vencen en 7 dias','Hechas','Avance promedio %','Activas sin fechas',...Array.from({length:WK},(_,i)=>'Semana '+wk(i))];
   const q=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
-  const lines=[head,...rows.map(r=>[r.p.name,r.p.email||'',r.act.length,r.doing,r.back,r.late,r.soon,r.done,r.avg,r.undated,...r.weeks])].map(l=>l.map(q).join(','));
+  const lines=[head,...rows.map(r=>[r.p.name,r.p.email||'',r.act.length,r.doing,r.rev,r.back,r.late,r.soon,r.done,r.avg,r.undated,...r.weeks])].map(l=>l.map(q).join(','));
   const blob=new Blob(['\ufeff'+lines.join('\n')],{type:'text/csv;charset=utf-8'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='carga-equipo-'+n2d(todayN())+'.csv'; document.body.appendChild(a); a.click(); a.remove();
 }
@@ -379,11 +393,11 @@ function bindGantt(){
 function openEditor(id,status){
   const t=id?S.tasks.find(x=>x.id===id):null;
   const td=n2d(todayN());
-  ed=t?JSON.parse(JSON.stringify(t)):{id:uid(),title:'',desc:'',projectId:F.project||'',status:status||'backlog',priority:'media',start:td,end:n2d(todayN()+7),assignees:F.person?[F.person]:[],requirement:'',link:'',tags:[],subtasks:[],_new:true};
+  ed=t?JSON.parse(JSON.stringify(t)):{id:uid(),title:'',desc:'',projectId:F.project||'',status:status||'backlog',priority:'media',start:td,end:n2d(todayN()+7),assignees:F.person?[F.person]:[],requirement:'',link:'',tags:[],subtasks:[],links:[],comments:[],_new:true};
   drawEditor();
 }
 function drawEditor(){
-  const t=ed;
+  const t=ed; const sc=$('#mbg')?$('#mbg').scrollTop:0;
   $('#modal').innerHTML=`<div class="modal-bg" id="mbg"><div class="modal">
     <div class="eyebrow"><span class="dot"></span>${t._new?'Nueva tarea':'Editar tarea'}</div>
     <h2>${t._new?'¿Qué hay que mover?':'Ajusta y sigue.'}</h2>
@@ -401,20 +415,29 @@ function drawEditor(){
     <div class="fld"><span class="eyebrow">Responsables</span>
       <div class="chips">${S.people.length?S.people.map(p=>`<label><input type="checkbox" data-p="${p.id}" ${t.assignees.includes(p.id)?'checked':''}><span>${avatar(p)}${esc(p.name)}</span></label>`).join(''):'<span class="meta">Aún no hay personas. Agrégalas en Equipo.</span>'}</div></div>
     <label class="fld"><span class="eyebrow">Requisito</span><input id="eReq" value="${esc(t.requirement)}" placeholder="Qué se necesita antes de empezar"></label>
-    <label class="fld"><span class="eyebrow">Link del entregable</span><input id="eLink" value="${esc(t.link)}" placeholder="https://"></label>
+    <div class="fld"><span class="eyebrow">Links</span><div id="links"></div><button class="btn sm" id="addLink" type="button">+ Agregar link</button></div>
     <label class="fld"><span class="eyebrow">Etiquetas (separadas por coma)</span><input id="eTags" value="${esc((t.tags||[]).join(', '))}" placeholder="Diseño, Cliente"></label>
     <div class="fld"><span class="eyebrow">Subtareas</span><div id="subs"></div>
       <div class="sub"><input type="text" id="newSub" placeholder="Nueva subtarea y Enter"><button class="btn sm" id="addSub" type="button">Añadir</button></div></div>
-    <div class="mfoot"><div>${t._new?'':`<button class="btn danger" id="eDel">Eliminar</button>`}</div><div class="right"><button class="btn" id="eCancel">Cancelar</button><button class="btn lima" id="eSave">Guardar</button></div></div>
+    ${t._new?`<div class="fld"><span class="eyebrow">Seguimiento</span><div class="meta">Guarda la tarea para poder agregar comentarios de seguimiento.</div></div>`:`<div class="fld"><span class="eyebrow">Seguimiento (${(t.comments||[]).length})</span><div id="cms"></div>
+      <div class="cform"><select id="cBy"><option value="">¿Quién lo está haciendo / quién comenta?</option>${S.people.map(p=>`<option value="${p.id}" ${p.id===me()?'selected':''}>${esc(p.name)}</option>`).join('')}</select>
+      <textarea id="cTxt" rows="2" placeholder="Avance, bloqueo o novedad de esta tarea"></textarea>
+      <button class="btn lima sm" id="cAdd" type="button">Comentar</button></div></div>`}
+    <div class="mfoot"><div style="display:flex;gap:8px">${t._new?'':`<button class="btn danger" id="eDel">Eliminar</button><button class="btn" id="eClone" type="button">Clonar</button>`}</div><div class="right"><button class="btn" id="eCancel">Cancelar</button><button class="btn lima" id="eSave">Guardar</button></div></div>
   </div></div>`;
-  drawSubs();
+  drawSubs(); drawLinks(); drawComments(); $('#mbg').scrollTop=sc;
 }
+function me(){ try{ const m=localStorage.getItem('tablero-me'); return person(m)?m:''; }catch(e){ return ''; } }
+function drawLinks(){ $('#links').innerHTML=(ed.links||[]).map((l,i)=>`<div class="lk"><input data-lt="${i}" value="${esc(l.t||'')}" placeholder="Nombre (opcional)"><input data-lu="${i}" value="${esc(l.u||'')}" placeholder="https://"><button class="xbtn" data-lx="${i}" aria-label="Quitar link" type="button">×</button></div>`).join(''); }
+function drawComments(){ const box=$('#cms'); if(!box) return; box.innerHTML=(ed.comments||[]).length?ed.comments.map(c=>{ const p=person(c.by); return `<div class="cm">${p?avatar(p,'lg'):`<span class="av lg" style="background:var(--panel2)">?</span>`}<div class="b"><div class="h"><strong>${esc(p?p.name:(c.n||'Alguien'))}</strong> · ${esc(fmtAt(c.at))}</div><div class="x">${esc(c.x)}</div></div></div>`; }).join(''):'<div class="meta">Aún no hay comentarios.</div>'; }
 function drawSubs(){
   $('#subs').innerHTML=ed.subtasks.map((s,i)=>`<div class="sub ${s.d?'done':''}"><input type="checkbox" data-sd="${i}" ${s.d?'checked':''}><input type="text" data-st="${i}" value="${esc(s.t)}"><button class="xbtn" data-sx="${i}" aria-label="Quitar">×</button></div>`).join('');
 }
 function readEditor(){
   ed.title=$('#eTitle').value.trim(); ed.desc=$('#eDesc').value.trim(); ed.projectId=$('#eProj').value; ed.status=$('#eStatus').value; ed.priority=$('#ePri').value;
-  ed.start=$('#eStart').value; ed.end=$('#eEnd').value; ed.requirement=$('#eReq').value.trim(); ed.link=$('#eLink').value.trim();
+  ed.start=$('#eStart').value; ed.end=$('#eEnd').value; ed.requirement=$('#eReq').value.trim();
+  ed.links=[...document.querySelectorAll('[data-lu]')].map(u=>({u:u.value.trim(),t:(document.querySelector('[data-lt="'+u.dataset.lu+'"]')||{value:''}).value.trim()})).filter(l=>l.u||l.t).map(l=>({u:safeUrl(l.u)||l.u,t:l.t}));
+  ed.link=((ed.links.find(l=>safeUrl(l.u))||{}).u)||'';
   ed.tags=$('#eTags').value.split(',').map(x=>x.trim()).filter(Boolean);
   ed.assignees=[...document.querySelectorAll('[data-p]')].filter(x=>x.checked).map(x=>x.dataset.p);
 }
@@ -444,6 +467,8 @@ const armed = {};
 function arm(btn,key,fn){ if(armed[key]){ clearTimeout(armed[key]); delete armed[key]; fn(); return; } btn.textContent='¿Seguro?'; armed[key]=setTimeout(()=>{ delete armed[key]; btn.textContent='Quitar'; },3000); }
 
 /* ---------- eventos ---------- */
+let downBg=false;
+document.addEventListener('mousedown',e=>{ downBg=e.target.id==='mbg'; });
 document.addEventListener('click',e=>{
   const g=s=>e.target.closest(s);
   if(g('[data-stop]')) return;
@@ -461,9 +486,22 @@ document.addEventListener('click',e=>{
   if((el=g('.drow'))){ openEditor(el.dataset.id); return; }
   if((el=g('tr.r'))){ openEditor(el.dataset.id); return; }
   /* modal */
-  if(e.target.id==='mbg'||g('#eCancel')||g('#tClose')){ const wasTeam=!!g('#tClose'); closeModal(); if(wasTeam) render(); return; }
+  if((e.target.id==='mbg'&&downBg)||g('#eCancel')||g('#tClose')){ const wasTeam=!!g('#tClose'); closeModal(); if(wasTeam) render(); return; }
   if(g('#eSave')){ readEditor(); if(!ed.title){ $('#eTitle').focus(); $('#eTitle').style.borderColor='#B3382A'; return; } if(ed.start&&ed.end&&ed.end<ed.start) ed.end=ed.start; const t={...ed}; delete t._new; upsert('tasks',t); closeModal(); render(); return; }
   if((el=g('#eDel'))){ arm(el,'del',()=>{ remove('tasks',ed.id); closeModal(); render(); }); el.textContent=armed.del?'¿Seguro?':'Eliminar'; return; }
+  if(g('#addLink')){ readEditor(); ed.links.push({u:'',t:''}); drawEditor(); const q=document.querySelectorAll('[data-lu]'); if(q.length) q[q.length-1].focus(); return; }
+  if((el=g('[data-lx]'))){ readEditor(); ed.links.splice(+el.dataset.lx,1); drawEditor(); return; }
+  if(g('#cAdd')){
+    const by=$('#cBy').value, x=$('#cTxt').value.trim();
+    if(!by){ $('#cBy').focus(); $('#cBy').style.borderColor='#B3382A'; return; }
+    if(!x){ $('#cTxt').focus(); $('#cTxt').style.borderColor='#B3382A'; return; }
+    try{ localStorage.setItem('tablero-me',by); }catch(_){}
+    const c={id:uid(),by,n:(person(by)||{}).name||'',at:new Date().toISOString(),x};
+    readEditor(); ed.comments=[...(ed.comments||[]),c];
+    const t0=S.tasks.find(v=>v.id===ed.id); if(t0){ t0.comments=[...(t0.comments||[]),c]; upsert('tasks',t0); }
+    drawEditor(); return;
+  }
+  if(g('#eClone')){ readEditor(); const c=JSON.parse(JSON.stringify(ed)); c.id=uid(); c.title=(c.title||'Tarea')+' (copia)'; c.subtasks=(c.subtasks||[]).map(x=>({t:x.t,d:false})); c.comments=[]; c.status=c.status==='done'?'backlog':c.status; c._new=true; ed=c; drawEditor(); return; }
   if(g('#addSub')){ addSub(); return; }
   if((el=g('[data-sx]'))){ readEditor(); ed.subtasks.splice(+el.dataset.sx,1); drawEditor(); return; }
   if(g('#pAdd')){ const n=$('#pName').value.trim(); if(!n){ $('#pName').focus(); return; } const p={id:uid(),name:n,email:$('#pMail').value.trim(),color:colorFor(S.people.length)}; upsert('people',p); openTeam(); return; }
